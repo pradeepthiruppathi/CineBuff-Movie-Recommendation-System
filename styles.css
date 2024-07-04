@@ -1,0 +1,38 @@
+/* styles.css */
+/* Existing styles remain */
+
+.movie-item {
+    display: flex;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  
+  .movie-item img {
+    max-width: 120px;
+    height: auto;
+    margin-right: 20px;
+  }
+  
+  .movie-item .movie-details {
+    flex: 1;
+  }
+  
+  .movie-item h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .movie-item p {
+    margin-bottom: 10px;
+  }
+  
+  @media (max-width: 600px) {
+    .movie-list {
+      grid-template-columns: 1fr;
+    }
+  }
+  

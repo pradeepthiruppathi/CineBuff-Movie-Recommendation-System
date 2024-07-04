@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Find a Movie Based on Your Mood and Genre</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Find a Movie Based on Your Mood and Genre</h2>
+        
+        <form id="findMovieForm">
+            <label for="mood">Select Your Current Mood:</label>
+            <select id="mood" name="mood">
+                <option value="Sad">Sad</option>
+                <option value="Happy">Happy</option>
+                <option value="Excited">Excited</option>
+                <!-- Add more mood options as needed -->
+            </select><br><br>
+            
+            <label for="genre">Select a Genre:</label>
+            <select id="genre" name="genre">
+                <option value="Drama">Drama</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Action">Action</option>
+                <!-- Add more genre options as needed -->
+            </select><br><br>
+            
+            <button type="submit">Find Movie</button>
+        </form>
+
+        <hr>
+
+        <div id="recommendedMovies" class="movie-list"></div>
+    </div>
+
+    <script>
+        document.getElementById('findMovieForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var mood = document.getElementById('mood').value;
+            var genre = document.getElementById('genre').value;
+            fetchMovieInfo(mood, genre);
+        });
+
+        function fetchMovieInfo(mood, genre) {
+            var api_key = 'AIzaSyCuyK0gj8vrXKk264vC9OON4SHSM-1r-ME';  // Replace with your actual API key
+            var search_engine_id = '2550453c57dde473e';  // Replace with your Custom Search Engine ID
+            var search_query = `${mood} ${genre} movie`;
+            var url = `https://www.googleapis.com/customsearch/v1?key=${api_key}&cx=${search_engine_id}&q=${search_query}&num=1`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    var movieTitle = data.items[0].title;
+                    var movieSnippet = data.items[0].snippet;
+                    var movieLink = data.items[0].link;
+
+                    var movieResultsContainer = document.getElementById('recommendedMovies');
+                    movieResultsContainer.innerHTML = `<h3>Recommended Movie:</h3>
+                                                        <p><strong>Title:</strong> ${movieTitle}</p>
+                                                        <p><strong>Description:</strong> ${movieSnippet}</p>
+                                                        <p><a href="${movieLink}" target="_blank">View Movie Details</a></p>`;
+                })
+                .catch(error => {
+                    console.error('Error fetching movie info:', error);
+                    var movieResultsContainer = document.getElementById('recommendedMovies');
+                    movieResultsContainer.innerHTML = '<p>Sorry, something went wrong. Please try again later.</p>';
+                });
+        }
+    </script>
+</body>
+</html>
